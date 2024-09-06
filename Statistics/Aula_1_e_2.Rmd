@@ -1,0 +1,207 @@
+---
+title: "Aulas 1 e 2"
+author: "Maykon Hopka"
+date: "2024-09-03"
+---
+
+## Conceitos Iniciais
+
+A estatística envolve técnicas para coletar, organizar, descrever, analisar e interpretar dados, ou provenientes de experimentos, ou vindos de estudos observacionais.
+
+#### População:
+
+Conjunto de elementos que formam o universo de nosso estudo que são passíveis de ser observados, sob as mesmas condições.
+
+#### Amostra:
+
+parte dos elementos de uma população.
+
+#### Amostragem:
+
+Processo de seleção da amostra.
+
+#### Amostragem aleatória simples:
+
+O processo de seleção dos elementos é feito por sorteios, fazendo com que todos os elementos da população tenham a mesma chance de ser escolhidos e, além disso, todo subconjunto de n elementos tenha a mesma chance de fazer parte da amostra.
+
+#### Parâmetro:
+
+uma medida que descreve certa característica dos elementos da população.
+
+#### Estatística:
+
+uma medida que descreve certa característica dos elementos da amostra.
+
+#### Estimativa:
+
+valor resultante do cálculo de uma estatística, quando usado para se ter uma ideia do parâmetro de interesse.
+
+## Média
+
+A média, também conhecida como média aritmética, é uma medida de tendência central que representa o valor típico de um conjunto de dados. Ela é calculada somando todos os valores do conjunto e dividindo essa soma pelo número total de valores.
+
+Define-se média aritmética por:
+
+$$
+\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i
+$$
+
+-   $n$ é o número total de observações,
+
+-   $x_i$ representa cada valor do conjunto de dados.
+
+A média é uma medida útil porque fornece uma ideia geral do "centro" dos dados. No entanto, ela pode ser influenciada por valores extremos, conhecidos como outliers, que podem distorcer a representação do conjunto de dados.
+
+## Variância
+
+A variância é uma medida estatística que quantifica a dispersão ou a variabilidade de um conjunto de dados em relação à sua média. Em termos simples, ela indica o quanto os valores de um conjunto de dados se afastam da média desse conjunto.
+
+#### Variância **Populacional**
+
+$$
+\sigma^2 = \frac{1}{N} \sum_{i=1}^{N} (x_i - \mu)^2
+$$
+
+-   $\sigma^2$ representa a variância populacional.
+
+-   $N$ é o tamanho da população.
+
+-   $x_i$ são os valores individuais.
+
+-   $\mu$ é a média populacional.
+
+#### Variância **Amostral**
+
+$$
+s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})^2
+$$
+
+-   $s^2$ representa a variância amostral.
+
+-   $n$ é o tamanho da amostra.
+
+-   $x_i$ são os valores individuais.
+
+-   $\bar{x}$ é a media amostral
+
+##### Divide-se por n ou por n-1?
+
+Quando calculamos a variância de uma população completa, usamos $n$ como divisor. Isso é porque temos acesso a todos os dados da população
+
+Quando calculamos a variância a partir de uma amostra, usamos $n−1$ como divisor. Isso é conhecido como **correção de Bessel** e é feito para evitar o viés na estimativa da variância.
+
+A razão para usar $n−1$ é que a média amostral $\bar{x}$ é uma estimativa da média populacional $\mu$. Como a média amostral tende a ser mais próxima dos dados da amostra do que a média populacional, isso pode levar a uma subestimação da variância. Dividir por $n−1$ corrige esse viés, resultando em uma estimativa não tendenciosa da variância populacional
+
+## Desvio Padrão
+
+O desvio padrão é uma medida estatística que quantifica a dispersão ou a variabilidade de um conjunto de dados em relação à sua média. Ele indica o quanto, em média, os valores de um conjunto de dados se afastam da média desse conjunto. Um desvio padrão baixo indica que os dados estão próximos da média, enquanto um desvio padrão alto indica que os dados estão mais dispersos.
+
+**Para uma população:**
+
+$$
+\sigma = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (x_i - \mu)^2}
+$$
+
+**Para uma amostra:**
+
+$$
+s = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})^2}
+$$
+
+#### Frequência e Frequência Relativa
+
+## Usando o R
+
+```{r}
+#Criando um vetor com os valores
+valores <- c(174.4, 177.9, 185.6, 180.8, 173.9,
+             176.8, 165.0, 176.4, 172.1, 170.3,
+             172.0, 170.4, 170.8, 175.1, 167.3,
+             166.9, 165.8, 176.1, 171.1, 174.3,
+             179.7, 180.8, 179.9, 169.8, 175.6,
+             169.0, 173.3, 174.6, 177.4, 174.7,
+             168.5, 174.1, 172.4, 178.7, 179.0,
+             175.5, 181.5, 171.0, 159.0, 164.9,
+             179.0, 173.9, 177.6, 172.1, 175.5,
+             164.4, 167.7, 185.2, 166.2, 172.1)
+
+
+
+```
+
+```{r}
+#Calcular o desvio padrão da amostra
+dp <- sd(valores)
+
+print(dp)
+
+#Calcular a media da amostra
+med <- mean(valores)
+
+print(med)
+
+#Calcular a mediana da amostra
+mediana <- median(valores)
+
+print(mediana)
+
+#Calcular o máximo e mínimo  da amostra
+max <- max(valores)
+min <- min(valores)
+
+print(max)
+print(min)
+
+#Calcular os quartis
+quartis <- quantile(valores, probs = c(0.25, 0.75))
+
+print(quartis)
+```
+
+```{r}
+# Plotar Histograma
+# como a raiz do valor foi aproximadamente 3,8 optou-se por arredondar para 4 e também mudar-se os limites de forma adequada.
+intervalos = seq(156,188,4)
+hist.info <- hist(valores,main = "Histograma de valores", 
+     xlab = "Valores", 
+     ylab = "Frequência",
+     col = "lightblue", 
+     border = "black",
+     breaks = intervalos,
+     xaxt = 'n')
+axis(1, at=intervalos, pos = 0)
+```
+
+#### Roteiro de um histograma
+
+Número de intervalos $\sqrt{n}$
+
+```{r}
+# Plotando um Boxplot 
+boxplot(valores, 
+        main = "Boxplot dos Valores", 
+        ylab = "Valores",
+        col = "lightblue",
+        border = "black",
+        notch = TRUE)
+```
+
+#### Roteiro de um Boxplot
+
+1.  **Caixa (Box)**: A parte central do boxplot é a caixa, que representa o intervalo interquartil (IQR). O IQR é a diferença entre o primeiro quartil (Q1) e o terceiro quartil (Q3), ou seja, IQR=Q3−Q1. A caixa se estende do Q1 ao Q3, contendo os 50% centrais dos dados.
+
+2.  **Mediana**: Dentro da caixa, uma linha horizontal indica a mediana (Q2) do conjunto de dados. A mediana divide o conjunto de dados em duas partes iguais.
+
+3.  **Bigodes (Whiskers)**: Os "bigodes" se estendem a partir da caixa até os valores mais extremos que não são considerados outliers. Normalmente, eles se estendem até 1,5 vezes o IQR a partir dos quartis.
+
+4.  **Outliers**: Os pontos que estão além dos bigodes são considerados outliers e são frequentemente representados como pontos individuais. Esses valores são significativamente diferentes do restante dos dados.
+
+#### Interpretação
+
+-   **Centro**: A mediana fornece uma medida de tendência central.
+
+-   **Dispersão**: O tamanho da caixa (IQR) indica a variabilidade dos dados. Uma caixa mais longa sugere maior dispersão.
+
+-   **Simetria**: A posição da mediana dentro da caixa pode indicar a simetria dos dados. Se a mediana estiver mais próxima de Q1, os dados podem estar assimetricamente distribuídos para a direita, e vice-versa.
+
+-   **Outliers**: A presença de outliers pode indicar valores extremos que merecem investigação adicional.
