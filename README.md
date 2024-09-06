@@ -1,2 +1,2 @@
 # University
-This repository was created to store and organize relevant and interesting materials from programming courses
+Hi! I'm Maykon, and I’m a student at UFSC. This repository was created to store and organize relevant and interesting materials from programming courses, as well as some fun things I come across. Here, you’ll find code examples, summaries, exercises, and resources that complement learning and practice in various programming languages and techniques. Feel free to explore and contribute! Welcome =)
