@@ -5,27 +5,61 @@ date: "2024-09-12"
 Reference: Cap.2 Devore
 ---
 
+### Introdução a Probabilidade
+
+A probabilidade é definida como o estudo da aleatoriedade e da incerteza. Ela fornece métodos para quantificar as chances de ocorrência de diversos resultados em situações experimentais.
+
 ### Modelo Determinístico
+
+Um **modelo determinístico** é caracterizado pela previsibilidade completa dos resultados. Ou seja, dado o estado inicial de um sistema, o resultado final pode ser previsto com precisão. Nesse modelo, não há incertezas e cada ação produz um único resultado específico​.
 
 ### Modelo Probabilístico
 
-### 
+No **modelo probabilístico**, ao contrário do determinístico, existe incerteza sobre o resultado de um experimento. A probabilidade é usada para expressar o quão provável é a ocorrência de diferentes resultados. Este tipo de modelo é usado quando não podemos prever um resultado exato, mas podemos estimar a distribuição dos possíveis resultados​.
 
 ### Definições importantes
 
--   Experimento aleatório
+#### Experimento
 
--   Espaço Amostral
+Um experimento é qualquer ação ou processo cujo resultado está sujeito à incerteza.
 
-    -   Espaço amostral discreto
+#### Experimento aleatório
 
-    -   Espaço amostral contínuo
+Um **experimento aleatório** é um procedimento ou ação que pode ser repetido indefinidamente e que possui um conjunto de possíveis resultados, mas cujo resultado específico não pode ser previsto com certeza antes da sua realização. Ou seja, embora saibamos todos os resultados possíveis, o resultado final de cada execução é imprevisível e depende do acaso.
 
--   Evento
+##### Características de um experimento aleatório:
+
+1.  **Incerteza**: O resultado exato não pode ser conhecido antecipadamente.
+
+2.  **Repetibilidade**: O experimento pode ser repetido nas mesmas condições.
+
+3.  **Conjunto de Resultados Possíveis (Espaço Amostral)**: Existe um conjunto bem definido de todos os possíveis resultados
+
+#### Espaço Amostral
+
+Um **espaço amostral** é o conjunto de todos os resultados possíveis de um experimento, denotado por $S$.
+
+##### Espaço amostral discreto
+
+Contém um número finito ou infinitamente enumerável de resultados. Exemplo: o resultado de lançar uma moeda ou um dado​.
+
+##### Espaço amostral contínuo
+
+Contém um intervalo contínuo de números reais, como medir a temperatura ou a altura de uma pessoa​.
+
+#### Evento
+
+Um **evento** é definido como qualquer subconjunto de resultados dentro do espaço amostral. Se o evento consiste em um único resultado, ele é chamado de evento simples. Se contém vários resultados, é um evento composto​.
 
 ### Interpretação Clássica da Probabilidade
 
+Na **interpretação clássica**, a probabilidade de um evento é calculada como a razão entre o número de resultados favoráveis ao evento e o número total de resultados possíveis, assumindo que todos os resultados são igualmente prováveis. Por exemplo, ao lançar um dado, a probabilidade de obter um número par seria​.
+
+$P(A) = \frac{3}{6} = 0,5$
+
 ### Probabilidade como frequência relativa limite num experimento
+
+Este conceito define a probabilidade como o valor para o qual a frequência relativa de um evento tende à medida que o número de repetições do experimento aumenta indefinidamente. Se jogarmos uma moeda muitas vezes, a frequência relativa de obter "cara" se aproxima de 0,5, que é a probabilidade do evento​.
 
 ### Axiomas da Probabilidade
 
