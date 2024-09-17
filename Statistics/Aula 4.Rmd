@@ -11,7 +11,7 @@ A probabilidade é definida como o estudo da aleatoriedade e da incerteza. Ela f
 
 ### Modelo Determinístico
 
-Um **modelo determinístico** é caracterizado pela previsibilidade completa dos resultados. Ou seja, dado o estado inicial de um sistema, o resultado final pode ser previsto com precisão. Nesse modelo, não há incertezas e cada ação produz um único resultado específico​.
+Um **modelo determinístico** é caracterizado pela previsibilidade completa dos resultados. Dado o estado inicial de um sistema, o resultado final pode ser previsto com precisão. Nesse modelo, não há incertezas e cada ação produz um único resultado específico​.
 
 ### Modelo Probabilístico
 
