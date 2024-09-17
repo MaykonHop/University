@@ -1,0 +1,58 @@
+---
+title: "Aula 4 - Probabilidade"
+author: "Maykon Hopka"
+date: "2024-09-12"
+Reference: Cap.2 Devore
+---
+
+### Modelo Determinístico
+
+### Modelo Probabilístico
+
+### 
+
+### Definições importantes
+
+-   Experimento aleatório
+
+-   Espaço Amostral
+
+    -   Espaço amostral discreto
+
+    -   Espaço amostral contínuo
+
+-   Evento
+
+### Interpretação Clássica da Probabilidade
+
+### Probabilidade como frequência relativa limite num experimento
+
+### Axiomas da Probabilidade
+
+-   $$ \text{Sejam } A_i \text{ num espaço amostral } \Omega \text{ ( } 0 \leq P(A_i) \leq 1 \text{ )} $$
+
+-   $$
+    P(\Omega) =1
+    $$
+
+-   $$ P(A_1 \cup A_2) = P(A_1) + P(A_2) \text{ se } A_1 \cap A_2 = \emptyset $$
+
+-   $$
+    P(A) + P(\bar{A}) = 1
+    $$
+
+-   $$
+    P(A_1 \cup A_2) = P(A_1) + P(A_2) - P(A_1 \cap A_2)
+    $$
+
+### Probabilidade Condicional
+
+-   A aquisição de informação adicional modifica a análise.
+
+-   $$
+    P(A \mid B) = \frac{P(A \cap B)}{P(B)}
+    $$
+
+-   Regra da Multiplicação
+
+    -   $$P(A \cap B) = P(A) \cdot P(B \mid A) = P(B) \cdot P(A \mid B)$$
