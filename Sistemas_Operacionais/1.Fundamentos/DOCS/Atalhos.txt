@@ -1,0 +1,17 @@
+| Sintaxe             | Resultado                                  | Exemplo de uso                           |
+|---------------------|--------------------------------------------|-------------------------------------------|
+| `# Título`          | Título de nível 1                         | `# Fundamentos`                          |
+| `## Subtítulo`      | Título de nível 2                         | `## Estrutura de um SO`                  |
+| `**negrito**`       | **negrito**                                | `**Importante**`                         |
+| `*itálico*`         | *itálico*                                  | `*palavra-chave*`                        |
+| `- item` ou `* item`| Lista com marcadores                     | `- Primeiro item`                        |
+| `1. item`           | Lista numerada                            | `1. Passo um`                            |
+| `> citação`         | Bloco de citação                          | `> Esta é uma citação`                   |
+| `` `código` ``      | Código em linha                          | `` Use o comando `ls` ``                 |
+| \`\`\`código\`\`\`  | Bloco de código (várias linhas)           | ```python\nprint("Olá")\n```             |
+| `---` ou `***`      | Linha horizontal / separador              | `---`                                    |
+| `![alt](img.png)`   | Inserir imagem                           | `![Diagrama](estrutura_SO.png)`          |
+| `[texto](link)`     | Link clicável                            | `[Google](https://google.com)`           |
+| `- [ ]`             | Lista de tarefas (não marcada)            | `- [ ] Fazer resumo`                     |
+| `- [x]`             | Lista de tarefas (marcada)                | `- [x] Tópico 1 concluído`               |
+| `<!-- comentário -->`| Comentário invisível no renderizado     | `<!-- Nota: revisar esse tópico -->`     |
