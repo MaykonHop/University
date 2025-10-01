@@ -48,10 +48,11 @@ Para que duas tarefas `t1` e `t2` possam executar em paralelo($t_1 || t_2$) sem 
     >Não pode só colocar um sleep()
 
 ### Soluções estudadas
-- **Inibição de interrupções**: simples, mas só funciona em sistemas monoprocessados (ex. embarcados) e pode travar todo o sistema, pois a preempção é desativada.
+- **Inibição de interrupções**:Inibir troca de contextos, mas só funciona em sistemas monoprocessados (ex. embarcados) e pode travar todo o sistema, pois a preempção é desativada.
 
 
 - **Solução trivial (`busy`)**: usa variável de estado(flag) → gera uma condição de disputa na variável _busy_.
+
     Exemplo:
 
     ```c
@@ -72,46 +73,48 @@ Para que duas tarefas `t1` e `t2` possam executar em paralelo($t_1 || t_2$) sem 
     ![busy](image-2.png)
 
 
-- **Alternância de uso**: variável `turn` que força ordem fixa → pode bloquear tarefas que não querem usar a seção crítica.
+- **Alternância de uso**: criar uma variável `turn` que força ordem fixa →.
 
-```c
-    int turn = 0; // tarefa 0 tem a vez inicialmente
+    ```c
+        int turn = 0; // tarefa 0 tem a vez inicialmente
+        int num_tasks;
 
-    void enter(int id) {
-        while (turn != id) {
-            // espera enquanto não for a vez da tarefa
+        void enter(int task) {
+            while (turn != task) {
+                // espera enquanto não for a vez da tarefa
+            }
         }
-    }
 
-    void leave(int id) {
-        turn = (id + 1) % 2; // passa a vez para a outra tarefa
-    }
-```
-
-
-- **Algoritmo de Peterson**: solução correta para 2 tarefas, usa duas variáveis (interesse + vez).
-
-```c
-    int turn;
-    int interested[2] = {0, 0};
-
-    void enter(int id) {
-        interested[id] = 1;
-        turn = id;
-        while (interested[1 - id] && turn == id) {
-            // espera enquanto a outra tarefa estiver interessada e for a vez dela
+        void leave(int task) {
+            turn = (turn + 1) % num_tasks; // passa a vez para a próxima tarefa
         }
-    }
+    ```
 
-    void leave(int id) {
-        interested[id] = 0;
-    }
 
-```
+- **Algoritmo de Dekker e Peterson**: solução correta para 2 tarefas, usa duas variáveis (interesse + vez).
 
-- **Algoritmos para múltiplas tarefas**: ex. de Dekker, Eisenberg & McGuire.
+    ```c
+        int turn; // indica de quem é a vez
+        int interested[2] = {0, 0}; //a tarefa i quer entrar?
 
-- **Instruções atômicas**: hardware fornece primitivos (`test-and-set`, `compare-and-swap`).
+        void enter(int task) { // task = 0 ou 1
+            int other = 1 - task; // id da outra tarefa
+            interested[task] = 1; //task quer acessar a seção crítica
+            turn = task;
+            while (interested[other] && turn == task) {
+                // espera enquanto a outra tarefa estiver interessada e for a vez dela
+            }
+        }
+
+        void leave(int id) {
+            interested[id] = 0;
+        }
+
+    ```
+
+- **Algoritmos para múltiplas tarefas**: ex. de Dekker, Eisenberg & McGuire, algoritmo de Lamport (Bakery Algorithm).
+
+- **Instruções atômicas**: hardware fornece primitivos (`test-and-set`, `compare-and-swap`, `xchg` ).
 
 - **Spinlocks**: baseados em espera ocupada, úteis em trechos curtos dentro do kernel.  
 
@@ -124,11 +127,15 @@ Para que duas tarefas `t1` e `t2` possam executar em paralelo($t_1 || t_2$) sem 
 - Pouco escaláveis.  
 
 ### Semáforos (Dijkstra, 1965)
-- Estrutura: contador inteiro + fila de espera.  
+- Estrutura: contador inteiro + fila de espera e operações de acesso.  
 - Operações:
-  - `down(s)` (P): tenta decrementar; bloqueia se não houver recurso.  
-  - `up(s)` (V): incrementa; acorda tarefa se houver fila.  
-  - `init(s,v)`: inicializa semáforo com valor `v`.  
+  - `down(s)` (P): tenta decrementar; suspende a tarefa e a põe na fila.  
+  - `up(s)` (V): tenta incrementar; acorda uma tarefa da fila.  
+  - `init(s,v)`: inicializa semáforo com valor `v`. 
+
+![semaforos](image-3.png)
+
+
 - Vantagens:
   - **Eficiência**: tarefas bloqueadas não gastam CPU.  
   - **Justiça**: fila FIFO.  
@@ -137,11 +144,40 @@ Para que duas tarefas `t1` e `t2` possam executar em paralelo($t_1 || t_2$) sem 
   - Controle de estacionamento (cada vaga = recurso).  
   - Exclusão mútua em conta bancária.  
 
+- Implementação pela biblioteca POSIX (`sem_init`, `sem_wait`, `sem_post`, etc).
+    ```C
+    #include <semaphore.h>
+    sem_t sem; // declaração do semáforo
+
+    int sem_init(sem_t *sem, int pshared, unsigned int value); // inicializa o semáforo.
+    // pshared = 0 (entre threads do mesmo processo), pshared != 0 (entre processos diferentes)
+    // value = valor inicial do semáforo.
+
+    int sem_wait(sem_t *sem); // operação de down (P).
+
+    int sem_post(sem_t *sem); // operação de up (V).
+
+    int sem_trywait(sem_t *sem); // retorna erro se o semáforo estiver ocupado.
+
+    ```
+
 ### Mutexes
-- Versão simplificada dos semáforos (binários: 0 ou 1).  
-- Muito usados em sistemas POSIX e Windows.  
+- Versão simplificada dos semáforos (binários: 0 ou 1).    
+- Garantem exclusão mútua simples. 
 - Operações típicas: `lock`, `unlock`, `trylock`.  
-- Garantem exclusão mútua simples.  
+- Exemplo de uso em POSIX:
+    ```C
+    #include <pthread.h>
+    pthread_mutex_t mutex; // declaração do mutex
+
+    int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr); // inicializa o mutex.
+    // attr = NULL (atributos padrão).
+    int pthread_mutex_lock(pthread_mutex_t *mutex); // bloqueia o mutex (entra na seção crítica).
+
+    int pthread_mutex_unlock(pthread_mutex_t *mutex); // desbloqueia o mutex (sai da seção crítica).
+
+    int pthread_mutex_destroy(pthread_mutex_t *mutex); // destrói o mutex.
+    ```
 
 ### Variáveis de Condição
 - Permitem que tarefas esperem por uma condição lógica (ex.: buffer cheio/vazio).  
@@ -155,56 +191,14 @@ Para que duas tarefas `t1` e `t2` possam executar em paralelo($t_1 || t_2$) sem 
   - **Hoare**: sinalização transfere imediatamente o controle → pouco usada.  
   - **Mesa** (POSIX): sinalização apenas acorda, programador deve liberar mutex.  
 
+![variaveis-condicao](image-4.png)
+
 ### Monitores
 - Estrutura de alto nível que **encapsula dados e métodos sincronizados**.  
 - Sincronização é automática → mais seguro que semáforos/mutexes.  
 - Evita erros como esquecer `unlock`.  
 - Usado em linguagens como Java, C#, etc.  
 
+![monitor](image-5.png)
 
-## Impasses (Deadlocks)
 
-### Definição
-- Estado em que tarefas ficam **bloqueadas permanentemente** aguardando recursos umas das outras.  
-- Nenhuma tarefa consegue prosseguir, mesmo havendo processamento disponível.  
-
-### Exemplo Clássico
-- Duas transferências bancárias entre contas diferentes → cada tarefa segura um mutex e espera pelo outro.  
-
-### Condições necessárias (Coffman, 1971)
-1. **Exclusão mútua** (um recurso só pode ser usado por uma tarefa).  
-2. **Posse e espera** (tarefa mantém recursos já adquiridos enquanto solicita outros).  
-3. **Não-preempção** (recurso só é liberado voluntariamente).  
-4. **Espera circular** (ciclo de dependências).  
-
-> Se **uma** dessas condições for eliminada, não há impasse.
-
-### Grafos de Alocação de Recursos
-- Tarefas = círculos; recursos = retângulos.  
-- Alocação = seta recurso → tarefa.  
-- Requisição = seta tarefa → recurso.  
-- Ciclos → indicam possível impasse.  
-- Com **recursos únicos** → ciclo = impasse.  
-- Com **múltiplas instâncias** → ciclo pode ser resolvido.  
-
-### Técnicas de Tratamento
-1. **Prevenção**: impedir que as condições de Coffman se formem.  
-   - Spooling (ex.: impressoras).  
-   - Solicitar todos os recursos de uma vez.  
-   - Time-out em requisições.  
-   - Ordem global de recursos.  
-2. **Impedimento**: manter o sistema em estados **seguros**.  
-   - Exemplo: **Algoritmo do Banqueiro** (Dijkstra).  
-   - O sistema só concede recursos se isso não levar a um estado inseguro.  
-3. **Detecção e Recuperação**:  
-   - Permite impasses, mas detecta ciclos periodicamente.  
-   - Estratégias de recuperação:  
-     - Encerrar tarefas.  
-     - Preemptar recursos.  
-     - Reverter transações.  
-
-### Situação Prática
-- Sistemas operacionais modernos (Linux, Windows, macOS) **não implementam tratamento de impasses no núcleo**.  
-- Responsabilidade é deixada para os desenvolvedores de aplicações.  
-
----
