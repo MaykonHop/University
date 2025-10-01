@@ -48,7 +48,7 @@ Para que duas tarefas `t1` e `t2` possam executar em paralelo($t_1 || t_2$) sem 
     >Não pode só colocar um sleep()
 
 ### Soluções estudadas
-- **Inibição de interrupções**:Inibir troca de contextos, mas só funciona em sistemas monoprocessados (ex. embarcados) e pode travar todo o sistema, pois a preempção é desativada.
+- **Inibição de interrupções**: Inibir troca de contextos, mas só funciona em sistemas monoprocessados (ex. embarcados) e pode travar todo o sistema, pois a preempção é desativada.
 
 
 - **Solução trivial (`busy`)**: usa variável de estado(flag) → gera uma condição de disputa na variável _busy_.
@@ -73,7 +73,7 @@ Para que duas tarefas `t1` e `t2` possam executar em paralelo($t_1 || t_2$) sem 
     ![busy](image-2.png)
 
 
-- **Alternância de uso**: criar uma variável `turn` que força ordem fixa →.
+- **Alternância de uso**: criar uma variável `turn` que força ordem fixa → limita a execução concorrente, pois as tarefas são obrigadas a alternar mesmo quando não há conflito.
 
     ```c
         int turn = 0; // tarefa 0 tem a vez inicialmente

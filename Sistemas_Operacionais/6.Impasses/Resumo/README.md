@@ -88,16 +88,13 @@ void transferir(conta_t* contaDeb, conta_t* contaCred, int valor)
 
    lock(contaCred->m);     // obtém acesso à contaCred
 
-   if (contaCred->saldo >= valor)
-   {
-      contaCred->saldo += valor;  // credita valor em contaCred
-   }
+   contaCred->saldo += valor;  // credita valor em contaCred
 
    unlock(contaCred->m);   // libera acesso à contaCred
 }
 ```
 
-### Situação Prática - Resolvendo Impasse atuando na ordem global de recursos - espera circular0654+
+### Situação Prática - Resolvendo Impasse atuando na ordem global de recursos - espera circular
 ```c
 typedef struct conta_t
 {
